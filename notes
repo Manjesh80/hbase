@@ -1,0 +1,14 @@
+
+
+https://www.safaribooksonline.com/library/view/hbase-high-performance/9781783983063/ch01s03.html
+https://www.safaribooksonline.com/library/view/pro-apache-phoenix/9781484223703/A421381_1_En_3_Chapter.html
+https://www.safaribooksonline.com/library/view/hbase-design-patterns/9781783981045/ch03.html
+
+
+HBase Phoenix installation instruction
+https://www.safaribooksonline.com/library/view/pro-apache-phoenix/9781484223703/A421381_1_En_2_Chapter.html
+
+
+Create a vagrant box locally
+vagrant package --output hbase-phoneix.box
+vagrant box add hbase-phoneix hbase-phoneix.box

@@ -1,0 +1,21 @@
+
+CREATE TABLE IF NOT EXISTS USER
+ (id INTEGER NOT NULL PRIMARY KEY,
+  d.FIRST_NAME VARCHAR,
+  d.LAST_NAME VARCHAR) ;
+
+
+UPSERT INTO USER VALUES( 1, 'JAI', 'GANESH' );
+
+select * from user;
+
+alter table user add zipcode varchar;
+
+delete from user where id = 2;
+
+!describe user;
+
+
+
+
+
