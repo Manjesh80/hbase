@@ -1,0 +1,56 @@
+
+
+CREATE TABLE my_schema.users (
+   username varchar primary key,
+   firstname varchar,
+   lastname varchar,
+   email varchar[],
+   password varchar,
+   created_date timestamp
+);
+
+
+INSERT INTO MY_SCHEMA.USERS(username, firstname, lastname, email, password, created_date) VALUES ('johnsmith', 'John', 'Smith', ['johnsmith@gmail.com', 'johnsmith@yahoo.com'], 'password123', '2013-09-09');
+UPSERT INTO my_schema.users(username, firstname, lastname, email, password, created_date) VALUES ('johnsmith', 'John', 'Smith', ['johnsmith@gmail.com', 'johnsmith@yahoo.com'], 'password123', '2013-09-09');
+
+UPSERT INTO my_schema.users VALUES ('johnsmith', 'John', 'Smith', ['johnsmith@gmail.com', 'johnsmith@yahoo.com'], 'password123', '2013-09-09');
+
+INSERT INTO users (username, firstname, lastname, email, password, created_date) VALUES ('johnsmith', 'John', 'Smith', ['johnsmith@gmail.com', 'johnsmith@yahoo.com'], 'password123', '2013-09-09');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

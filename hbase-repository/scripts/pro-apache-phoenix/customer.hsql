@@ -1,0 +1,106 @@
+CREATE TABLE dbschema.CUSTOMER(
+CUST_ID BIGINT NOT NULL,
+FNAME VARCHAR (30),
+LNAME VARCHAR (30),
+EMAIL VARCHAR(50),
+DOB DATE,
+CONSTRAINT PK PRIMARY KEY(CUST_ID));
+
+-- Salting based on buckets
+
+CREATE TABLE ORDERS (
+    ORDER_ID BIGINT NOT NULL PRIMARY KEY,
+    ORDER_NO BIGINT,
+    ORDER_DATE DATE)
+SALT_BUCKETS=10;
+
+-- PRE SPLIT Tables
+
+CREATE TABLE CUSTOMER (
+    CUST_ID BIGINT NOT NULL PRIMARY KEY,
+    FNAME VARCHAR,
+    LNAME VARCHAR ,
+    STATE VARCHAR)
+SPLIT ON (‘AZ’,'CA','NJ');
+
+
+In above create table DDL two column families, A and B, will be created.
+
+CREATE TABLE ITEM (
+    ITEM_ID VARCHAR NOT NULL PRIMARY KEY,
+    A.ITEM_CODE VARCHAR,
+    A.ITEM_TYPE VARCHAR,
+    B.PRICE DOUBLE);
+
+-- COMPRESSION
+
+CREATE TABLE ITEM (
+    ITEM_ID VARCHAR NOT NULL PRIMARY KEY,
+    A.ITEM_CODE VARCHAR,
+    A.ITEM_TYPE VARCHAR,
+    B.PRICE DOUBLE)
+COMPRESSION='GZ';
+
+-- An optional CASCADE keyword can be used to drop any available views for the table.
+This is used to drop dangling views for dropped tables. A table cannot be dropped if a view exists
+on the table.
+
+DROP TABLE schema_name.table_name CASCADE;
+
+
+-- ALTER TABLES
+
+ALTER TABLE CUSTOMER ADD PHONE_NO INTEGER (10);
+
+
+-- RENAMING A COLUMN
+You first need to drop a column and then create a new column.
+
+1. Create a new column (with the new name and possibly new type).
+
+2. Run an UPSERT SELECT statement to copy migrate data from the old column to the new column.
+We will discuss UPSERT and SELECT in detail in querying part.
+
+3. Drop the old column.
+
+-- LIMIT
+SELECT * FROM ORDERS LIMIT 2;
+
+--WHERE
+SELECT * FROM ORDERS WHERE ORDER_ID=10249;
+
+--GROUP BY
+SELECT CUST_ID,SUM(QUANTITY) FROM ORDERS GROUP BY CUST_ID;
+
+--HAVING
+SELECT CUST_ID,SUM(QUANTITY) FROM ORDERS GROUP BY CUST_ID HAVING CUST_ID >101 ;
+
+--Logical Operators
+
+--AND
+SELECT CUST_ID,FNAME,CITY,STATE FROM CUSTOMER WHERE CUST_ID >100 AND STATE='Texas';
+
+--OR
+SELECT CUST_ID,FNAME,CITY,STATE FROM CUSTOMER WHERE CUST_ID >200 OR STATE='Arizona';
+
+--IN
+SELECT CUST_ID,FNAME,CITY,STATE FROM CUSTOMER WHERE STATE IN ('Arizona','Texas');
+
+--LIKE
+SELECT CUST_ID,FNAME,CITY,STATE FROM CUSTOMER WHERE STATE LIKE 'Tex%';
+
+--BETWEEN
+SELECT ORDER_ID, ORDER_DATE, CUST_ID FROM ORDERS WHERE ORDER_ID BETWEEN 10300 AND 10400;
+
+
+
+
+
+
+
+
+
+
+
+
+

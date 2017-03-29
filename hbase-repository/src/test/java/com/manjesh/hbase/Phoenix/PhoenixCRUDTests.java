@@ -1,5 +1,6 @@
-package com.manjesh.hbase;
+package com.manjesh.hbase.Phoenix;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -26,7 +27,8 @@ public class PhoenixCRUDTests {
             Class.forName("org.apache.phoenix.jdbc.PhoenixDriver");
             // Connect to the database
             //connection = DriverManager.getConnection("jdbc:phoenix:192.168.99.101:2181:/hbase-unsecure");
-            connection = DriverManager.getConnection("jdbc:phoenix:192.168.99.101:2181:/hbase");
+            //connection = DriverManager.getConnection("jdbc:phoenix:192.168.99.101:2181:/hbase");
+            connection = DriverManager.getConnection("jdbc:phoenix:hbase-vm:2181:/hbase");
             System.out.println("Connection established....");
             // Create a JDBC statement
             statement = connection.createStatement();
@@ -46,6 +48,64 @@ public class PhoenixCRUDTests {
                 System.out.println("**********   " + name + "      ***********");
                 System.out.println("\tRow: " + id + " = " + name);
             }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (Exception e) {
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (Exception e) {
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception e) {
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testUpsertData() throws Exception {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+        PreparedStatement ps = null;
+        try {
+            Class.forName("org.apache.phoenix.jdbc.PhoenixDriver");
+            connection = DriverManager.getConnection("jdbc:phoenix:hbase-vm:2181:/hbase");
+            System.out.println("Connection established....");
+            statement = connection.createStatement();
+
+            statement.executeUpdate("delete from dbschema.CUSTOMER");
+            statement.executeUpdate("upsert into dbschema.CUSTOMER values (1,'John','Mayer', 'j@j.com', '2010-01-01' )");
+            statement.executeUpdate("upsert into dbschema.CUSTOMER values (2,'Ganesh','Jai', 'j@j.com', '2010-01-01' )");
+            connection.commit();
+            ps = connection.prepareStatement("select * from dbschema.CUSTOMER");
+            rs = ps.executeQuery();
+            System.out.println("Table Values");
+            int count = 0;
+            while (rs.next()) {
+                count += 1;
+                Integer id = rs.getInt(1);
+                String name = rs.getString(2);
+                System.out.println("**********   " + name + "      ***********");
+                System.out.println("\tRow: " + id + " = " + name);
+            }
+            Assert.assertEquals("Got 2 records", count, 2);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         } finally {

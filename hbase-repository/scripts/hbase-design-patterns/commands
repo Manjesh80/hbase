@@ -1,0 +1,21 @@
+https://www.tutorialspoint.com/hbase/hbase_create_data.htm
+
+hbase-shell
+
+list -- list all tables
+scan 'MY_SCHEMA.USERS'  // Case sensitive
+
+
+create 'emp', 'personal data', 'professional data'
+
+put 'emp','1','personal data:name','raju'
+
+put 'emp','1','personal data:city','hyderabad'
+
+put 'emp','1','professional data:salary','50000'
+
+
+
+
+
+
